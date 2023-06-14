@@ -58,13 +58,13 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/Users/giaco/data/wordpress'
+      device: '/home/edogi/data/wordpress'
   mariadb:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/Users/giaco/data/mariadb'
+      device: '/home/edogi/data/mariadb'
 
 networks:
   inception:

@@ -1,18 +1,36 @@
-#!/bin/bash
+#!/bin/sh
+
+#start my sql service
 service mysql start;
 
-# Create the database
+mysql_secure_installation << _EOF_
+
+Y
+root4pass
+root4pass
+Y
+n
+Y
+Y
+_EOF_
+
+# create a database (if the database does not exist)
 mysql -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
 
-# Create the user and grant privileges
+# create an user with a password (if the user does not exist)
 mysql -e "CREATE USER IF NOT EXISTS \`${SQL_USER}\`@'localhost' IDENTIFIED BY '${SQL_PASSWORD}';"
+
+# give all privileges to the user
 mysql -e "GRANT ALL PRIVILEGES ON \`${SQL_DATABASE}\`.* TO \`${SQL_USER}\`@'%' IDENTIFIED BY '${SQL_PASSWORD}';"
 
-# Set root password
+#modify sql database
 mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
 
-# Flush privileges
+#reload the database
 mysql -e "FLUSH PRIVILEGES;"
 
+#shutdown
 mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
+
+#use exec to 
 exec mysqld_safe
