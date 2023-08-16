@@ -1,28 +1,46 @@
-# -f: specify the path to the Compose file
-all: create_dir
-	@sudo docker compose -f ./srcs/docker-compose.yml up -d --build
+NAME = inception
+
+$(NAME): create_dir
+	docker-compose -f ./srcs/docker-compose.yml up -d --build
+
+all:  $(NAME)
+
+# **************************************************************************** #
+#  Manipulations                                                          #
+# **************************************************************************** #
+
+create_dir:
+	@mkdir -p /Users/giaco/data/mariadb
+	@mkdir -p /Users/giaco/data/wordpress
+	@chmod 777 /Users/giaco/data/mariadb
+	@chmod 777 /Users/giaco/data/wordpress
+
+build:
+	@docker-compose build
+
+up:
+	@docker-compose -f ./srcs/docker-compose.yml up -d --build
+
+down:
+	@docker-compose -f ./srcs/docker-compose.yml down --rmi all
+
+clean:	stop
+	@docker compose -f ./srcs/docker-compose.yml down -v
+
+fclean:	down
+	@rm -rf /Users/giaco/data/mariadb
+	@rm -rf /Users/giaco/data/wordpress
+	@docker system prune -af
 
 re: clean all
 
-# -p: create parent directories along with the specified directory, if they don't already exist
-create_dir:
-	@sudo mkdir -p /home/edogi/data/mariadb
-	@sudo mkdir -p /home/edogi/data/wordpress
-	@sudo chmod 777 /home/edogi/data/mariadb
-	@sudo chmod 777 /home/edogi/data/wordpress
-
-stop:
-	@sudo docker compose -f ./srcs/docker-compose.yml stop
-
-# down: stops and removes the containers defined in the Docker Compose file
-# -v: Removes the volumes associated with the containers.
-clean: stop
-	@sudo docker compose -f ./srcs/docker-compose.yml down -v
-
-# docker system prune -af command: remove unused Docker resources, including containers, networks, volumes, and images, freeing up disk space on your system
-fclean: clean
-	@sudo rm -rf /home/edogi/data/mariadb
-	@sudo rm -rf /home/edogi/data/wordpress
-	@sudo docker system prune -af
-
 .PHONY: all re create_dir stop clean fclean
+
+# **************************************************************************** #
+#  Inspections                                                            #
+# **************************************************************************** #
+list:
+	docker-compose -f ./srcs/docker-compose.yml ls
+
+logs:
+	docker-compose -f ./srcs/docker-compose.yml logs

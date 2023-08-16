@@ -1,18 +1,15 @@
-# syntax=docker/dockerfile:1
-
 FROM debian:buster
 
-RUN apt update -y && apt upgrade -y \
-    && apt-get install -y mariadb-server mariadb-client
-    # && rm -rf /var/lib/apt/lists/*
-
-RUN mkdir -p /run/mysqld \
-&& chown -R mysql:mysql /run/mysqld \
-&& chmod 777 /run/mysqld
-
-COPY conf/my.cnf /etc/mysql/my.cnf
-COPY tools/mariadb_setup.sh /mariadb_setup.sh
-
-ENTRYPOINT [ "bash", "mariadb_setup.sh" ]
+RUN apt-get update && apt-get -y install mariadb-server mariadb-client \
+&& rm -rf /var/lib/apt/lists/* \
+&& mkdir -p /var/run/mysqld \
+&& chown -R mysql:mysql /var/run/mysqld \
+&& chmod 777 /var/run/mysqld
 
 EXPOSE 3306
+
+COPY conf/my.cnf /etc/mysql/my.cnf
+COPY tools/mariadb_setup.sh /usr/local/bin/mariadb_setup.sh
+RUN chmod +x /usr/local/bin/mariadb_setup.sh
+
+ENTRYPOINT ["/usr/local/bin/mariadb_setup.sh"]
