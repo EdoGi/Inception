@@ -1,9 +1,20 @@
 #!/bin/sh
 
-#start my sql service
-service mysql start;
+mysql_install_db
 
-mysql_secure_installation << _EOF_
+/etc/init.d/mysql start
+
+#Check if the database exists
+
+if [ -d "/var/lib/mysql/$MYSQL_DATABASE" ]
+then 
+
+	echo "Database already exists"
+else
+
+# Set root option so that connexion without root password is not possible
+
+mysql_secure_installation <<_EOF_
 
 Y
 root4life
@@ -14,23 +25,18 @@ Y
 Y
 _EOF_
 
-# create a database (if the database does not exist)
-mysql -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
+#Add a root user on 127.0.0.1 to allow remote connexion
 
-# create an user with a password (if the user does not exist)
-mysql -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+	echo "GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; FLUSH PRIVILEGES;" | mysql -uroot
 
-# give all privileges to the user
-mysql -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+#Create database and user for wordpress
+	echo "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE; GRANT ALL ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD'; FLUSH PRIVILEGES;" | mysql -uroot
 
-#modify sql database
-mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+#Import database
+mysql -uroot -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE < /usr/local/bin/wordpress.sql
 
-#reload the database
-mysql -e "FLUSH PRIVILEGES;"
+fi
 
-#shutdown
-mysqladmin -u root -p$MYSQL_ROOT_PASSWORD shutdown
+/etc/init.d/mysql stop
 
-#use exec to 
-exec mysqld_safe
+exec "$@"

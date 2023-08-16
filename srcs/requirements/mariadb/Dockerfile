@@ -9,7 +9,10 @@ RUN apt-get update && apt-get -y install mariadb-server mariadb-client \
 EXPOSE 3306
 
 COPY conf/my.cnf /etc/mysql/my.cnf
+COPY ./conf/wordpress.sql /usr/local/bin/
 COPY tools/mariadb_setup.sh /usr/local/bin/mariadb_setup.sh
 RUN chmod +x /usr/local/bin/mariadb_setup.sh
 
 ENTRYPOINT ["/usr/local/bin/mariadb_setup.sh"]
+
+CMD ["mysqld", "--bind-address=0.0.0.0"]
