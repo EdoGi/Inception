@@ -7,15 +7,13 @@ service mysql start;
 mysql_secure_installation << _EOF_
 
 Y
-root4life
-root4life
+rootpass
+rootpass
 Y
 n
 Y
 Y
 _EOF_
-
-sleep 10
 
 # create a database (if the database does not exist)
 mysql -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"

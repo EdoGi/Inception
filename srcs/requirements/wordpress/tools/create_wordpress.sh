@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# FIXME : I put a sleep 5sec here
+sleep 5
+
 if [ -f ./wordpress/wp-config.php ]
 then
 	echo "wordpress already downloaded"

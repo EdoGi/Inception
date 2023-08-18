@@ -34,13 +34,26 @@ fclean:	down
 
 re: clean all
 
-.PHONY: all re create_dir stop clean fclean
-
 # **************************************************************************** #
 #  Inspections                                                            #
 # **************************************************************************** #
 list:
-	docker-compose -f ./srcs/docker-compose.yml ls
+	@docker-compose -f ./srcs/docker-compose.yml ls
 
 logs:
-	docker-compose -f ./srcs/docker-compose.yml logs
+	@docker-compose -f ./srcs/docker-compose.yml logs
+
+info:
+	@echo "=============================== IMAGES ==============================="
+	@docker images
+	@echo
+	@echo "============================= CONTAINERS ============================="
+	@docker ps -a
+	@echo
+	@echo "=============== NETWORKS ==============="
+	@docker network ls
+	@echo
+	@echo "====== VOLUMES ======"
+	@docker volume ls
+	
+.PHONY: all re create_dir up down clean fclean info logs list
