@@ -25,7 +25,7 @@ down:
 	@docker-compose -f ./srcs/docker-compose.yml down --rmi all
 
 clean:
-	@docker compose -f ./srcs/docker-compose.yml down -v
+	@docker-compose -f ./srcs/docker-compose.yml down -v
 
 fclean:	down
 	@rm -rf /Users/giaco/data/mariadb
