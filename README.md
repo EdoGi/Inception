@@ -8,16 +8,38 @@ Welcome to the Project Inception repository! This project involves setting up a 
 
     ```bash
     git clone <repository_url>
-    cd project-inception
+    cd Inception
     ```
 
-2. **Install Docker:** Install Docker and Docker Compose if not already installed on your system.
+2. **Install Docker:** Install Docker and Docker Compose if not already installed on your system. Make sure Docker is already running. If you encounter a daemon error, ensure that the Docker service is started.
+ 
+ > Note: If you're using Docker Desktop, make sure it's running and the Docker daemon is operational.
 
-3. **Set Up Directories and Permissions:** Run the following Makefile command to create the required data directories and set appropriate permissions:
+3. **Start the Project:** Run the following Makefile command to create the required data directories, set appropriate permissions, build the Docker images, and start the Docker services:
+
+    ```bash
+    make all
+    ```
+
+    Alternatively, you can choose to start the project step by step:
+
+    - **Set Up Directories and Permissions:** Run the following Makefile command to create the required data directories and set appropriate permissions:
 
     ```bash
     make create_dir
     ```
+   
+    - **Build Images:** Build the Docker images using:
+
+        ```bash
+        make build
+        ```
+
+    - **Start Services:** Start the Docker services using:
+
+        ```bash
+        make up
+        ```
 
 4. **Build and Start Services:** Build and start the Docker services using the following Makefile command:
 
@@ -25,7 +47,17 @@ Welcome to the Project Inception repository! This project involves setting up a 
     make up
     ```
 
-5. **Access WordPress:** Open your web browser and navigate to `https://login.42.fr`, replacing `login` with your actual login. You should see the configured WordPress website.
+5. **Update Hosts File:** In order to access the server using `egiacomi.42.fr`, you need to modify your system's hosts file. Use a text editor like `vim` or `nano` to open the `/etc/hosts` file and add the following line:
+
+    ```
+    127.0.0.1 egiacomi.42.fr
+    ```
+
+     > Note: You can use it with your own login, but don't forget to also change it in nginx.conf (line 7) and .env (domain name).
+     
+    Save the file and exit the text editor.
+   
+6. **Access WordPress:** Open your web browser and navigate to `https://login.42.fr`, replacing `login` with your actual login. You should see the configured WordPress website.
 
 ### Additional Makefile Commands
 
