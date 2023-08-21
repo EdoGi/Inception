@@ -2,6 +2,11 @@
 
 Welcome to the Project Inception repository! This project involves setting up a multi-container environment using Docker and Docker Compose to deploy a WordPress website with a MariaDB database. The project focuses on developing containerization skills and managing various components of a web application.
 
+## Prerequisites
+
+- Basic knowledge of Docker and Docker Engine is recommended.
+- Docker and Docker Compose must be installed on your system.
+  
 ## Usage
 
 1. **Clone Repository:** Clone this repository to your local machine.
@@ -15,7 +20,9 @@ Welcome to the Project Inception repository! This project involves setting up a 
  
  > Note: If you're using Docker Desktop, make sure it's running and the Docker daemon is operational.
 
-3. **Start the Project:** Run the following Makefile command to create the required data directories, set appropriate permissions, build the Docker images, and start the Docker services:
+3. **Update Volume Paths:** Before proceeding, open the `./srcs/docker-compose.yml` file and locate all occurrences of volume paths. Replace these paths with actual paths that exist on your machine and to which you have write access. Additionally, open the `Makefile` and do the same for any volume paths mentioned there.
+
+4. **Start the Project:** Run the following Makefile command to create the required data directories, set appropriate permissions, build the Docker images, and start the Docker services:
 
     ```bash
     make all
@@ -41,13 +48,13 @@ Welcome to the Project Inception repository! This project involves setting up a 
         make up
         ```
 
-4. **Build and Start Services:** Build and start the Docker services using the following Makefile command:
+5. **Build and Start Services:** Build and start the Docker services using the following Makefile command:
 
     ```bash
     make up
     ```
 
-5. **Update Hosts File:** In order to access the server using `egiacomi.42.fr`, you need to modify your system's hosts file. Use a text editor like `vim` or `nano` to open the `/etc/hosts` file and add the following line:
+6. **Update Hosts File:** In order to access the server using `egiacomi.42.fr`, you need to modify your system's hosts file. Use a text editor like `vim` or `nano` to open the `/etc/hosts` file and add the following line:
 
     ```
     127.0.0.1 egiacomi.42.fr
@@ -57,7 +64,7 @@ Welcome to the Project Inception repository! This project involves setting up a 
      
     Save the file and exit the text editor.
    
-6. **Access WordPress:** Open your web browser and navigate to `https://login.42.fr`, replacing `login` with your actual login. You should see the configured WordPress website.
+7. **Access WordPress:** Open your web browser and navigate to `https://login.42.fr`, replacing `login` with your actual login. You should see the configured WordPress website.
 
 ### Additional Makefile Commands
 
