@@ -1,6 +1,9 @@
+# Docker Compose configuration for WordPress application stack
+
 version: "3"
 
 services:
+  # MariaDB service for the database
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
@@ -15,6 +18,7 @@ services:
     expose:
       - "3306"
 
+  # WordPress service
   wordpress:
     container_name: wordpress
     image: wordpress
@@ -32,6 +36,7 @@ services:
     expose:
       - "9000"
 
+  # NGINX service for the web server
   nginx:
     container_name: nginx
     image: nginx
@@ -50,19 +55,23 @@ services:
       - "443:443"
 
 volumes:
+  # Volume for WordPress data
   wordpress:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/home/edogi/data/wordpress'
+      device: '/home/egiacomi/data/wordpress'
+
+  # Volume for MariaDB data
   mariadb:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/home/edogi/data/mariadb'
+      device: '/home/egiacomi/data/mariadb'
 
 networks:
+  # Custom network for communication between services
   inception:
     driver: bridge
