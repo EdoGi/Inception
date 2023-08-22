@@ -1,7 +1,7 @@
 NAME = inception
 
 $(NAME): create_dir
-	sudo docker-compose -f ./srcs/docker-compose.yml up -d --build
+	sudo docker compose -f ./srcs/docker-compose.yml up -d --build
 
 all:  $(NAME)
 
@@ -16,16 +16,16 @@ create_dir:
 	@sudo chmod 777 /home/egiacomi/data/wordpress
 
 build:
-	@sudo docker-compose build
+	@sudo docker compose build
 
 up:
-	@sudo docker-compose -f ./srcs/docker-compose.yml up -d --build
+	@sudo docker compose -f ./srcs/docker-compose.yml up -d --build
 
 down:
-	@sudo docker-compose -f ./srcs/docker-compose.yml down --rmi all
+	@sudo docker compose -f ./srcs/docker-compose.yml down --rmi all
 
 clean:
-	@sudo docker-compose -f ./srcs/docker-compose.yml down -v
+	@sudo docker compose -f ./srcs/docker-compose.yml down -v
 
 fclean:	down
 	@sudo rm -rf /home/egiacomi/data/mariadb
@@ -38,10 +38,10 @@ re: clean all
 #  Inspections                                                            #
 # **************************************************************************** #
 list:
-	@sudo docker-compose -f ./srcs/docker-compose.yml ls
+	@sudo docker compose -f ./srcs/docker-compose.yml ls
 
 logs:
-	@sudo docker-compose -f ./srcs/docker-compose.yml logs
+	@sudo docker compose -f ./srcs/docker-compose.yml logs
 
 info:
 	@echo "=============================== IMAGES ==============================="
